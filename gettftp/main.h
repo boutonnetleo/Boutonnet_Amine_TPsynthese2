@@ -5,8 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
+#include "functions.h"
 #define TRAM_LENGTH 512
 
-#define OP_READ 0x01
-#define OP_WRITE 0x02
+#define OP_READ 01
+#define OP_WRITE 02
+int buildRequest(char* buffer,int opcode,char* filename,char* mode);

@@ -8,22 +8,29 @@ int main(int argc, char **argv)
     char* mode="octet";
     struct addrinfo hints;
     struct addrinfo *res;
-    char buffer[TRAM_LENGTH]="%d%s%d%s%d";
-    scanf(buffer,OP_READ,filename,0x0,mode,0x0);
-
+    char buffer[TRAM_LENGTH];
+    size_t size=buildRequest(buffer,OP_READ,filename,mode);
+    //print the buffer
+    for(int i=0;i<size;i++){
+        printf("%02X ",(unsigned)buffer[i]);
+    }
+    printf("\n");
     memset(&hints, 0, sizeof(struct addrinfo));
     (&hints)->ai_protocol=IPPROTO_UDP;
     (&hints)->ai_family=AF_INET;
     (&hints)->ai_socktype=SOCK_DGRAM;
     getaddrinfo(host_adrr, host_port, &hints, &res);
+    /*
     struct addrinfo *current = res;
     printf("found something \n");
     printf("\t ai_family =%d\n", current->ai_family);
     printf("\t ai_socktype =%d\n", current->ai_socktype);
     printf("\t ai_protocol =%d\n", current->ai_protocol);
+    */
 
-    int fd=socket(current->ai_family,current->ai_socktype,current->ai_protocol);
-    connect(fd,(struct sockaddr*)res,TRAM_LENGTH);
+    int fd=socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+    printf("%d\n",fd);
+    sendto(fd,buffer,size,0,res->ai_addr,res->ai_addrlen);
         /*
             2 bytes     string    1 byte     string   1 byte
             ------------------------------------------------
@@ -54,9 +61,8 @@ int main(int argc, char **argv)
             The mode field contains the
    string "netascii", "octet", or "mail" --> on choisi octet
     */
-   send(fd,buffer,TRAM_LENGTH,0);
-    
-
+   close(fd);
+   printf("fin \n");
 }
 
 
