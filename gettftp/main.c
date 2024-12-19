@@ -9,6 +9,7 @@ int main(int argc, char **argv)
     struct addrinfo hints;
     struct addrinfo *res;
     char buffer[TRAM_LENGTH];
+    char buffer_receive[TRAM_LENGTH];
     size_t size=buildRequest(buffer,OP_READ,filename,mode);
     //print the buffer
     for(int i=0;i<size;i++){
@@ -61,6 +62,12 @@ int main(int argc, char **argv)
             The mode field contains the
    string "netascii", "octet", or "mail" --> on choisi octet
     */
+
+   size_t sizereceive= recv(fd, buffer_receive,TRAM_LENGTH,0);
+    for(int i=0;i<sizereceive;i++){
+        printf("%02X ",(unsigned)buffer_receive[i]);
+    }
+    printf("\n");
    close(fd);
    printf("fin \n");
 }

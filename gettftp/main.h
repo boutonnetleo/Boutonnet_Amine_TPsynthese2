@@ -3,7 +3,7 @@
 #include <netdb.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>
+
 #include <unistd.h>
 #include "functions.h"
 #define TRAM_LENGTH 512
